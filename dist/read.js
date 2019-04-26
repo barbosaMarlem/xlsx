@@ -39,7 +39,7 @@ function read(file, metadata) {
                 key = headerNamesByIndex[columnIndex] = CellReference.convertNumToColString(columnIndex);
             }
 
-            rowObj[key] = getCellValue(cell);
+            rowObj[key] = getCellValue(cell, wb);
         });
 
         if (rowObj) {
@@ -50,7 +50,7 @@ function read(file, metadata) {
     return resultRows;
 }
 
-function getCellValue(cell) {
+function getCellValue(cell, wb) {
     if (cell == null) {
         return null;
     }
@@ -77,6 +77,10 @@ function getCellValue(cell) {
 
         case CellType.STRING:
             return cell.getStringCellValue();
+
+        case CellType.FORMULA:
+            var evaluator = wb.getCreationHelper().createFormulaEvaluator();
+            return getCellValue(evaluator.evaluateInCell(cell));
 
         default:
             return null;
