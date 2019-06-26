@@ -73,6 +73,7 @@ var metadata = { //Opcional
     hasHeader: true, //Se deverá ser criada uma linha de header
     asByteArray: true, //Se o resultado é um byte[] ou o workbook do POI
     autoSize: true, //Se deve fazer o ajuste automatico de largura das celulas
+    orderByColumnConfig: true, //se deve utilizar ordenação de acordo com o parametro columns 
     headerStyle: { //Estilo que será aplicado ao header, caso exista
         bold: true,
         horizontalAlignment: 'center',

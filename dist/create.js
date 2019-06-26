@@ -57,8 +57,9 @@ function create(rows, metadata) {
     rows.forEach(function(row, index) {
       var sheetHeader = metadata.hasHeader && index == 0 ? sheet.createRow(0) : null;
       var sheetRow = sheet.createRow(metadata.hasHeader ? index + 1 : index);
+      var rowAux = metadata.orderByColumnConfig ? columnsMD : row;
 
-      Object.keys(row).forEach(function(key, cellIndex) {
+      Object.keys(rowAux).forEach(function(key, cellIndex) {
         var value = row[key];
         var valueClass = value && value.constructor.name;
 
