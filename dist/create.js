@@ -121,8 +121,9 @@ function create(rows, metadata, wbParam) {
     show('metadata.autoSize',metadata.autoSize)
     if (metadata.autoSize) {
       var headerRow = sheet.getRow(0);
-      show('headerRow',headerRow)
+      // show('headerRow',headerRow)
       headerRow.cellIterator().forEachRemaining(function(cell) {
+        show('cell',cell)
         sheet.autoSizeColumn(cell.getColumnIndex());
       });
       show('depois headerRow')
