@@ -18,7 +18,7 @@ var FONTS_CACHE = {};
 var STYLES_CACHE = {};
 
 function create(rows, metadata, wbParam) {
-  
+  show('1')
   FONTS_CACHE = {};
   STYLES_CACHE = {};
   
@@ -31,14 +31,20 @@ function create(rows, metadata, wbParam) {
   var wb;
 
   try {
+    show('2')
     wb = wbParam || new XSSFWorkbook();
+    show('3')
     var createHelper = wb.getCreationHelper();
-
+    show('4')
     var sheet;
     if (metadata.sheetProperties && metadata.sheetProperties.name) {
+      show('5')
       sheet = wb.createSheet(metadata.sheetProperties.name);
+      show('6')
     } else {
+      show('7')
       sheet = wb.createSheet();
+      show('8')
     }
 
     var sheetProperties = metadata.sheetProperties;
@@ -46,7 +52,7 @@ function create(rows, metadata, wbParam) {
     var generalStyle = metadata.style;
     var headerStyleMD = metadata.headerStyle;
     var rowStyle = metadata.rowStyle;
-
+    show('9')
     if (sheetProperties) {
       if (sheetProperties.password) {
         sheet.protectSheet(sheetProperties.password);
@@ -54,47 +60,64 @@ function create(rows, metadata, wbParam) {
         sheet.lockInsertColumns(true);
       }
     }
-
+    show('10')
     rows.forEach(function(row, index) {
+      show('11')
       var sheetHeader = metadata.hasHeader && index == 0 ? sheet.createRow(0) : null;
+      show('12')
       var sheetRow = sheet.createRow(metadata.hasHeader ? index + 1 : index);
+      show('13')
       var rowAux = metadata.orderByColumnConfig ? columnsMD : row;
+      show('14')
 
       Object.keys(rowAux).forEach(function(key, cellIndex) {
+        show('15')
         var value = row[key];
+        show('16')
         var valueClass = value && value.constructor.name;
+        show('17')
 
         var columnMD = columnsMD && columnsMD[key];
-
+        show('18')
         if (rowStyle && rowStyle.height) {
           sheetRow.setHeight(rowStyle.height);
         }
+        show('19')
 
         if (sheetHeader != null) {
-
+          show('20')
           if (headerStyleMD && headerStyleMD.height) {
             sheetHeader.setHeight(headerStyleMD.height);
           }
+          show('21')
 
           var style = Object.assign({}, generalStyle, columnMD, headerStyleMD);
-
+          show('22')
           var headerCell = createCell(wb, sheetHeader, cellIndex, style, createHelper, valueClass);
-
+          show('23')
+          show('24')
           if (columnMD && columnMD.description) {
+            show('25')
             headerCell.setCellValue(columnMD.description);
+            show('26')
           } else {
+            show('27')
             headerCell.setCellValue(key);
+            show('28')
           }
         }
-
+        show('29')
         var style = Object.assign({}, generalStyle, columnMD);
+        show('30')
         var cell = createCell(wb, sheetRow, cellIndex, style, createHelper, valueClass);
+        show('31')
 
         var formula = (columnMD && columnMD.formula) ? columnMD.formula : null;
         setTypedValue(cell, value, valueClass, formula);
+        show('32')
       });
     });
-
+    show('34')
     if (metadata.autoSize) {
       var headerRow = sheet.getRow(0);
       headerRow.cellIterator().forEachRemaining(function(cell) {
@@ -116,14 +139,21 @@ function create(rows, metadata, wbParam) {
         }
       });
     }
-
+    show('35')
     if (metadata.asByteArray) {
+      show('36')
       var baos = new ByteArrayOutputStream();
+      show('37')
       wb.write(baos);
+      show('38')
       return baos.toByteArray();
     } else {
+      show('39')
       return wb;
     }
+  } catch(error) {
+    show('40')
+    show('error', error, error.message)
   } finally {
     if (wb && metadata.asByteArray) {
       wb.close();
