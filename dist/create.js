@@ -118,19 +118,26 @@ function create(rows, metadata, wbParam) {
       });
     });
     show('34')
+    show('metadata.autoSize',metadata.autoSize)
     if (metadata.autoSize) {
       var headerRow = sheet.getRow(0);
+      show('headerRow',headerRow)
       headerRow.cellIterator().forEachRemaining(function(cell) {
         sheet.autoSizeColumn(cell.getColumnIndex());
       });
     } else {
       var headerRow = sheet.getRow(0);
+      show('headerRow else',headerRow)
       headerRow.cellIterator().forEachRemaining(function(cell) {
         var columnsKeys = Object.keys(columnsMD);
+        show('columnsKeys',columnsKeys)
         var columnIndex = cell.getColumnIndex()
+        show('columnIndex',columnIndex)
 
+        show('columnsMD',columnsMD)
         if (columnsMD && columnsKeys.length > 0) {
           var columnMD = columnsMD[columnsKeys[columnIndex]]
+          show('columnMD',columnMD)
           if (columnMD.size && columnMD.size.toString().toUpperCase() === 'AUTO') {
             sheet.autoSizeColumn(cell.getColumnIndex());
           } else if (!isNaN(columnMD.size) && columnMD.size >= 0) {
