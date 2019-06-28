@@ -2,7 +2,7 @@
   "name": "xlsx",
   "description": "Biblioteca de modelagemd e xlsx",
   "path": "dist",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "author": "Bruno Machado",
   "dependencies": {
     "jars": [
