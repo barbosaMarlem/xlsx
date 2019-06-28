@@ -17,7 +17,7 @@ var FONT_OPTION_NAMES = ['fontName', 'fontSize', 'fontColor', 'bold', 'italic', 
 var FONTS_CACHE = {};
 var STYLES_CACHE = {};
 
-function create(rows, metadata) {
+function create(rows, metadata, wbParam) {
   
   FONTS_CACHE = {};
   STYLES_CACHE = {};
@@ -31,10 +31,15 @@ function create(rows, metadata) {
   var wb;
 
   try {
-    wb = new XSSFWorkbook();
-
+    wb = wbParam || new XSSFWorkbook();
     var createHelper = wb.getCreationHelper();
-    var sheet = wb.createSheet();
+
+    var sheet;
+    if (metadata.sheetProperties && metadata.sheetProperties.name) {
+      sheet = wb.createSheet(metadata.sheetProperties.name);
+    } else {
+      sheet = wb.createSheet();
+    }
 
     var sheetProperties = metadata.sheetProperties;
     var columnsMD = metadata.columns;
@@ -47,10 +52,6 @@ function create(rows, metadata) {
         sheet.protectSheet(sheetProperties.password);
         sheet.lockDeleteColumns(true);
         sheet.lockInsertColumns(true);
-      }
-
-      if (sheetProperties.name) {
-        wb.setSheetName(0, sheetProperties.name);
       }
     }
 
@@ -124,7 +125,7 @@ function create(rows, metadata) {
       return wb;
     }
   } finally {
-    if (wb) {
+    if (wb && metadata.asByteArray) {
       wb.close();
     }
   }
